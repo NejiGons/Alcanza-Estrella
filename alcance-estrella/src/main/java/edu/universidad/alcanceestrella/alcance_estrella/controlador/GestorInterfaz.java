@@ -15,6 +15,7 @@ import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
@@ -131,11 +132,18 @@ public class GestorInterfaz {
             Alert alerta = new Alert(Alert.AlertType.NONE);
             alerta.setTitle("Pregunta");
             alerta.setHeaderText("Responde la siguiente pregunta:");
-            alerta.setContentText(pregunta.getEnunciado() + "\n\n" +
-                                  "A) " + pregunta.getOpciones()[0] + "\n" +
-                                  "B) " + pregunta.getOpciones()[1] + "\n" +
-                                  "C) " + pregunta.getOpciones()[2]);
 
+            // 🔹 Usamos un TextArea para que la pregunta se ajuste correctamente
+            TextArea textArea = new TextArea(pregunta.getEnunciado() + "\n\n" +
+                                             "A) " + pregunta.getOpciones()[0] + "\n" +
+                                             "B) " + pregunta.getOpciones()[1] + "\n" +
+                                             "C) " + pregunta.getOpciones()[2]);
+            textArea.setWrapText(true);
+            textArea.setEditable(false);
+            textArea.setPrefWidth(400); // 🔹 Ancho personalizado
+            textArea.setPrefHeight(150); // 🔹 Altura ajustable según contenido
+
+            alerta.getDialogPane().setContent(textArea);
             alerta.getButtonTypes().setAll(opcionA, opcionB, opcionC);
 
             Optional<ButtonType> respuesta = alerta.showAndWait();
@@ -146,6 +154,7 @@ public class GestorInterfaz {
             callback.accept(esCorrecta); // 🔹 Llama al callback con el resultado
         });
     }
+
 
 
     public static void aplicarCastigo(Juego juego, String castigo) {
